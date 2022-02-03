@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:_game/show_opponent_Hand.dart';
 import 'package:_game/show_player_hand.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +24,7 @@ class _RockPaperScissorsState extends State<RockPaperScissors> {
       playerUrl = 'assets/images/you.jpg';
       oppUrl = 'assets/images/opponent.jpg';
     });
-    Navigator.of(context).pushReplacementNamed('home');
+    Navigator.of(context).pop();
   }
 
   int scoreOfPlayer = 0, scoreOfOpponent = 0;
@@ -86,55 +84,54 @@ class _RockPaperScissorsState extends State<RockPaperScissors> {
         appBar: AppBar(
           title: const Text('Welcome Player'),
         ),
-        drawer: Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                padding: EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Settings'),
-              ),
-              ListTile(
-                title: const Text('New Game'),
-                onTap: newGame,
-              ),
-              ListTile(
-                title: const Text('Change Theme'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ShowPlayerHand(playerUrl, scoreOfPlayer),
-            Row(
+        body: SizedBox(
+          height: 900,
+          child: SingleChildScrollView(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                    onPressed: () => setStone(), child: const Text('Stone')),
-                ElevatedButton(
-                    onPressed: () => setPaper(), child: const Text('Paper')),
-                ElevatedButton(
-                    onPressed: () => setSissors(),
-                    child: const Text('Scissors'))
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () => setStone(),
+                        child: const Text('Stone')),
+                    ElevatedButton(
+                        onPressed: () => setPaper(),
+                        child: const Text('Paper')),
+                    ElevatedButton(
+                        onPressed: () => setSissors(),
+                        child: const Text('Scissors'))
+                  ],
+                ),
+                const SizedBox(
+                  height: 70,
+                ),
+                ShowPlayerHand(playerUrl, scoreOfPlayer),
+                const SizedBox(
+                  height: 10,
+                ),
+                showOpponentHand(oppUrl, scoreOfOpponent),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        onPressed: newGame,
+                        child: const Icon(Icons.refresh),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-            showOpponentHand(oppUrl, scoreOfOpponent)
-          ],
+          ),
         ),
       ),
-      routes: {'home': (ctx) => RockPaperScissors()},
     );
   }
 }
